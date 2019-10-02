@@ -8,8 +8,8 @@ export default function TodoList({ todos }) {
     return (
         <div>
             {
-                todos.map(todo => {
-                    return <Todo task={todo.task} />
+                todos.map((todo, indx) => {
+                    return <Todo key={indx} task={todo.task} />
                 })
             }
         </div>
