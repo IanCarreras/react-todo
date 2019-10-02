@@ -11,15 +11,20 @@ class App extends React.Component {
     super()
     this.state = {}
     this.addTodo = this.addTodo.bind(this)
+    this.toggleTodo = this.toggleTodo.bind(this)
   }
 
   componentWillMount() {
     this.setState({
       todos: [{
-        task: 'do stuff'
+        task: 'do stuff',
+        id: 1,
+        completed: false
       }, 
       {
-        task: 'do more stuff'
+        task: 'do more stuff',
+        id: 2,
+        completed: false
       }]
     })
   }
@@ -28,13 +33,36 @@ class App extends React.Component {
     return this.setState({todos: [...this.state.todos, newTodo]})
   }
 
+  toggleTodo = (e, todoId) => {
+    this.setState({
+      todos: this.state.todos.map(todo => {
+        if (todo.id === todoId) {
+          return {
+            ...todo,
+            completed: !todo.completed
+          }
+        } else {
+          return todo
+        }
+      })
+    })
+  }
+
+  clearCompleted = (e) => {
+    this.setState({
+      todos: this.state.todos.filter(todo => {
+        return !todo.completed
+      })
+    })
+  }
+
   render() {
     console.log(this.state.todos)
     return (
       <div>
         <h2>Welcome to your Todo App!</h2>
-        <TodoList todos={this.state.todos} />
-        <TodoForm addTodo={this.addTodo} />
+        <TodoList toggleTodo={this.toggleTodo} todos={this.state.todos} />
+        <TodoForm addTodo={this.addTodo} clearCompleted={this.clearCompleted} />
       </div>
     );
   }
